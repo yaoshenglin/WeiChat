@@ -1,0 +1,10 @@
+/* 
+  infoPlist.strings
+  BaiduTranslate
+
+  Created by xy on 2016/11/10.
+  Copyright © 2016年 xy. All rights reserved.
+*/
+
+CFBundleDisplayName = "百度翻译";
+CFBundleDevelopmentRegion = "zh-CN";
