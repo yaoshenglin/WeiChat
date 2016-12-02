@@ -35,7 +35,7 @@
     
     // Do any additional setup after loading the view.
     NSTextView *textView = _txtContent.documentView;
-    textView.delegate = self;//
+    textView.delegate = self;
     
     textView.automaticQuoteSubstitutionEnabled = NO;
     _txtLocalized.textView.automaticQuoteSubstitutionEnabled = NO;
