@@ -26,7 +26,7 @@
 {
     [super viewWillAppear];
     
-    self.view.window.title = @"百度翻译1";
+    self.view.window.title = @"百度翻译";
 }
 
 - (void)viewDidLoad
