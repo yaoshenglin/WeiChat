@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2015 Apple Inc. All Rights Reserved.
+ Copyright (C) 2016 Apple Inc. All Rights Reserved.
  See LICENSE.txt for this sample’s licensing information
  
  Abstract:
@@ -10,12 +10,14 @@
 #import <ifaddrs.h>
 #import <netdb.h>
 #import <sys/socket.h>
+#import <netinet/in.h>
 
 #import <CoreFoundation/CoreFoundation.h>
-#import <SystemConfiguration/SystemConfiguration.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
 #import "Reachability.h"
+
+#pragma mark IPv6 Support
+//Reachability fully support IPv6.  For full details, see ReadMe.md.
 
 
 NSString *kReachabilityChangedNotification = @"kNetworkReachabilityChangedNotification";
@@ -28,9 +30,9 @@ NSString *kReachabilityChangedNotification = @"kNetworkReachabilityChangedNotifi
 static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char* comment)
 {
 #if kShouldPrintReachabilityFlags
-    
-    NSLog(@"Reachability Flag Status: %c %c%c%c%c%c%c%c %s\n",
-          //(flags & kSCNetworkReachabilityFlagsIsWWAN)				? 'W' : '-',
+#if TARGET_OS_IPHONE
+    NSLog(@"Reachability Flag Status: %c%c %c%c%c%c%c%c%c %s\n",
+          (flags & kSCNetworkReachabilityFlagsIsWWAN)               ? 'W' : '-',
           (flags & kSCNetworkReachabilityFlagsReachable)            ? 'R' : '-',
           
           (flags & kSCNetworkReachabilityFlagsTransientConnection)  ? 't' : '-',
@@ -42,6 +44,20 @@ static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char*
           (flags & kSCNetworkReachabilityFlagsIsDirect)             ? 'd' : '-',
           comment
           );
+#elif TARGET_OS_MAC
+    NSLog(@"Reachability Flag Status: %c %c%c%c%c%c%c%c %s\n",
+          (flags & kSCNetworkReachabilityFlagsReachable)            ? 'R' : '-',
+          
+          (flags & kSCNetworkReachabilityFlagsTransientConnection)  ? 't' : '-',
+          (flags & kSCNetworkReachabilityFlagsConnectionRequired)   ? 'c' : '-',
+          (flags & kSCNetworkReachabilityFlagsConnectionOnTraffic)  ? 'C' : '-',
+          (flags & kSCNetworkReachabilityFlagsInterventionRequired) ? 'i' : '-',
+          (flags & kSCNetworkReachabilityFlagsConnectionOnDemand)   ? 'D' : '-',
+          (flags & kSCNetworkReachabilityFlagsIsLocalAddress)       ? 'l' : '-',
+          (flags & kSCNetworkReachabilityFlagsIsDirect)             ? 'd' : '-',
+          comment
+          );
+#endif
 #endif
 }
 
@@ -62,7 +78,6 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 @implementation Reachability
 {
-    BOOL _alwaysReturnLocalWiFiStatus; //default is NO
     SCNetworkReachabilityRef _reachabilityRef;
 }
 
@@ -76,7 +91,6 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
         if (returnValue != NULL)
         {
             returnValue->_reachabilityRef = reachability;
-            returnValue->_alwaysReturnLocalWiFiStatus = NO;
         }
         else {
             CFRelease(reachability);
@@ -86,9 +100,9 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 }
 
 
-+ (instancetype)reachabilityWithAddress:(const struct sockaddr_in *)hostAddress
++ (instancetype)reachabilityWithAddress:(const struct sockaddr *)hostAddress
 {
-    SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)hostAddress);
+    SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, hostAddress);
     
     Reachability* returnValue = NULL;
     
@@ -98,7 +112,6 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
         if (returnValue != NULL)
         {
             returnValue->_reachabilityRef = reachability;
-            returnValue->_alwaysReturnLocalWiFiStatus = NO;
         }
         else {
             CFRelease(reachability);
@@ -108,7 +121,6 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 }
 
 
-
 + (instancetype)reachabilityForInternetConnection
 {
     struct sockaddr_in zeroAddress;
@@ -116,28 +128,13 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     zeroAddress.sin_len = sizeof(zeroAddress);
     zeroAddress.sin_family = AF_INET;
     
-    return [self reachabilityWithAddress:&zeroAddress];
+    return [self reachabilityWithAddress: (const struct sockaddr *) &zeroAddress];
 }
 
+#pragma mark reachabilityForLocalWiFi
+//reachabilityForLocalWiFi has been removed from the sample.  See ReadMe.md for more information.
+//+ (instancetype)reachabilityForLocalWiFi
 
-+ (instancetype)reachabilityForLocalWiFi
-{
-    struct sockaddr_in localWifiAddress;
-    bzero(&localWifiAddress, sizeof(localWifiAddress));
-    localWifiAddress.sin_len = sizeof(localWifiAddress);
-    localWifiAddress.sin_family = AF_INET;
-    
-    // IN_LINKLOCALNETNUM is defined in <netinet/in.h> as 169.254.0.0.
-    localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
-    
-    Reachability* returnValue = [self reachabilityWithAddress: &localWifiAddress];
-    if (returnValue != NULL)
-    {
-        returnValue->_alwaysReturnLocalWiFiStatus = YES;
-    }
-    
-    return returnValue;
-}
 
 
 #pragma mark - Start and stop notifier
@@ -175,26 +172,10 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     {
         CFRelease(_reachabilityRef);
     }
-    
-    [super dealloc];
 }
 
 
 #pragma mark - Network Flag Handling
-
-- (NetworkStatus)localWiFiStatusForFlags:(SCNetworkReachabilityFlags)flags
-{
-    PrintReachabilityFlags(flags, "localWiFiStatusForFlags");
-    NetworkStatus returnValue = NotReachable;
-    
-    if ((flags & kSCNetworkReachabilityFlagsReachable) && (flags & kSCNetworkReachabilityFlagsIsDirect))
-    {
-        returnValue = ReachableViaWiFi;
-    }
-    
-    return returnValue;
-}
-
 
 - (NetworkStatus)networkStatusForFlags:(SCNetworkReachabilityFlags)flags
 {
@@ -231,58 +212,14 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
         }
     }
     
-//    if ((flags & kSCNetworkReachabilityFlagsIsWWAN) == kSCNetworkReachabilityFlagsIsWWAN)
-//    {
-//        /*
-//         ... but WWAN connections are OK if the calling application is using the CFNetwork APIs.
-//         */
-//        returnValue = ReachableViaWWAN;
-//        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-//        {
-//            CTTelephonyNetworkInfo * info = [[CTTelephonyNetworkInfo alloc] init];
-//            NSString *currentRadioAccessTechnology = info.currentRadioAccessTechnology;
-//            
-//            if (currentRadioAccessTechnology)
-//            {
-//                if ([currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyLTE])
-//                {
-//                    returnValue = ReachableVia4G;
-//                    NSLog(@"当前为4G网络");
-//                }
-//                else if ([currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyEdge] || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyGPRS])
-//                {
-//                    returnValue = ReachableVia2G;
-//                    NSLog(@"当前为2G网络");
-//                }
-//                else
-//                {
-//                    returnValue = ReachableVia3G;
-//                    NSLog(@"当前为3G网络");
-//                }
-//            }
-//        }
-//        else
-//        {
-//            if((flags & kSCNetworkReachabilityFlagsReachable) == kSCNetworkReachabilityFlagsReachable)
-//            {
-//                if ((flags & kSCNetworkReachabilityFlagsTransientConnection) == kSCNetworkReachabilityFlagsTransientConnection)
-//                {
-//                    if((flags & kSCNetworkReachabilityFlagsConnectionRequired) == kSCNetworkReachabilityFlagsConnectionRequired)
-//                    {
-//                        returnValue = ReachableVia2G;
-//                        NSLog(@"当前为2G网络");
-//                    }
-//                    else
-//                    {
-//                        returnValue = ReachableVia3G;
-//                        NSLog(@"当前为3G网络");
-//                    }
-//                }
-//            }
-//        }
-//    
-//        returnValue = ReachableViaWWAN;//本程序暂时不作2、3、4G的区分
-//    }
+    SCNetworkReachabilityFlags value = pow(2, 18);
+    if ((flags & value) == value)
+    {
+        /*
+         ... but WWAN connections are OK if the calling application is using the CFNetwork APIs.
+         */
+        returnValue = ReachableViaWWAN;
+    }
     
     return returnValue;
 }
@@ -310,16 +247,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     
     if (SCNetworkReachabilityGetFlags(_reachabilityRef, &flags))
     {
-        if (_alwaysReturnLocalWiFiStatus)
-        {
-            //WiFi
-            returnValue = [self localWiFiStatusForFlags:flags];
-        }
-        else
-        {
-            //移动网络
-            returnValue = [self networkStatusForFlags:flags];
-        }
+        returnValue = [self networkStatusForFlags:flags];
     }
     
     return returnValue;

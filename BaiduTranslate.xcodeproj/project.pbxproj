@@ -17,10 +17,11 @@
 		148936B91DD41058002DC939 /* Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 148936B81DD41058002DC939 /* Request.m */; };
 		148936BC1DD44527002DC939 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 148936BB1DD44527002DC939 /* Tools.m */; };
 		148936BF1DD451D9002DC939 /* infoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 148936C11DD451D9002DC939 /* infoPlist.strings */; };
-		148D755B1E10F39A00DD0686 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 148D755A1E10F39A00DD0686 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		148D755B1E10F39A00DD0686 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 148D755A1E10F39A00DD0686 /* Reachability.m */; };
 		148D755E1E10F40F00DD0686 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 148D755D1E10F40F00DD0686 /* SystemConfiguration.framework */; };
 		148D75601E10F42700DD0686 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 148D755F1E10F42700DD0686 /* CoreTelephony.framework */; };
 		148D75B01E11131D00DD0686 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 148D75AF1E11131D00DD0686 /* NetworkExtension.framework */; };
+		14D9415C1E121A0100C868FA /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D9415B1E121A0100C868FA /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		148D755D1E10F40F00DD0686 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		148D755F1E10F42700DD0686 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		148D75AF1E11131D00DD0686 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		14D9415B1E121A0100C868FA /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				148D755A1E10F39A00DD0686 /* Reachability.m */,
 				1452F36F1DD5AE90009628AF /* NSXMLParser+Cobbler.h */,
 				1452F3701DD5AE90009628AF /* NSXMLParser+Cobbler.m */,
+				14D9415B1E121A0100C868FA /* File.swift */,
 				148936A61DD40FD0002DC939 /* Supporting Files */,
 			);
 			path = BaiduTranslate;
@@ -156,6 +159,7 @@
 				TargetAttributes = {
 					1489369F1DD40FCF002DC939 = {
 						CreatedOnToolsVersion = 8.1;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -204,6 +208,7 @@
 				148936A81DD40FD0002DC939 /* main.m in Sources */,
 				148936A51DD40FCF002DC939 /* AppDelegate.m in Sources */,
 				1452F3711DD5AE90009628AF /* NSXMLParser+Cobbler.m in Sources */,
+				14D9415C1E121A0100C868FA /* File.swift in Sources */,
 				1436E0E51DDC68C400F47309 /* IndicatorView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,6 +329,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
@@ -332,6 +338,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.weikong.BaiduTranslate;
 				PRODUCT_NAME = "百度翻译";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -339,6 +347,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
@@ -347,6 +356,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.weikong.BaiduTranslate;
 				PRODUCT_NAME = "百度翻译";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

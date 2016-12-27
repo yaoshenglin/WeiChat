@@ -33,10 +33,11 @@
     NSDictionary *ssid = nil;
     NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();//获取支持的端口(比如笔记本电脑包含有线和无线2种接口的网络)
     //NSLog(@"Supported interfaces: %@", ifs);
-    for (NSString *ifnam in ifs) {
+    for (__unused NSString *ifnam in ifs) {
         CFDictionaryRef myDict = CGSessionCopyCurrentDictionary();
         NSDictionary *info = myDict ? (NSDictionary *)CFBridgingRelease(myDict) : nil;
         //NSLog(@"dici：%@",[info  allKeys]);
+        //CNCopyCurrentNetworkInfo((CFStringRef)ifnam);
         CGSessionCopyCurrentDictionary();
         if (info[@"SSID"]) {
             //BSSID是WiFi的mac地址
