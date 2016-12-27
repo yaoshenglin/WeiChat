@@ -4,7 +4,6 @@
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -813,65 +812,10 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="Rfh-7P-E4P" customClass="IndicatorView">
                                 <rect key="frame" x="0.0" y="0.0" width="609" height="352"/>
                                 <subviews>
-                                    <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" fixedFrame="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tif-8l-JNZ">
+                                    <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="rA4-FY-bNK">
                                         <rect key="frame" x="296" y="168" width="16" height="16"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zmh-Q7-SYO">
-                                                <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
-                                                <subviews>
-                                                    <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mge-1Y-dgk">
-                                                        <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
-                                                        <subviews>
-                                                            <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bUv-YO-EAc">
-                                                                <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
-                                                                <subviews>
-                                                                    <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AET-35-Xee">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
-                                                                        <subviews>
-                                                                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="yZ6-js-Q42">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
-                                                                            </progressIndicator>
-                                                                        </subviews>
-                                                                        <visibilityPriorities>
-                                                                            <integer value="1000"/>
-                                                                        </visibilityPriorities>
-                                                                        <customSpacing>
-                                                                            <real value="3.4028234663852886e+38"/>
-                                                                        </customSpacing>
-                                                                    </stackView>
-                                                                </subviews>
-                                                                <visibilityPriorities>
-                                                                    <integer value="1000"/>
-                                                                </visibilityPriorities>
-                                                                <customSpacing>
-                                                                    <real value="3.4028234663852886e+38"/>
-                                                                </customSpacing>
-                                                            </stackView>
-                                                        </subviews>
-                                                        <visibilityPriorities>
-                                                            <integer value="1000"/>
-                                                        </visibilityPriorities>
-                                                        <customSpacing>
-                                                            <real value="3.4028234663852886e+38"/>
-                                                        </customSpacing>
-                                                    </stackView>
-                                                </subviews>
-                                                <visibilityPriorities>
-                                                    <integer value="1000"/>
-                                                </visibilityPriorities>
-                                                <customSpacing>
-                                                    <real value="3.4028234663852886e+38"/>
-                                                </customSpacing>
-                                            </stackView>
-                                        </subviews>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
-                                    </stackView>
+                                    </progressIndicator>
                                 </subviews>
                             </customView>
                         </subviews>
@@ -900,7 +844,7 @@
                     <connections>
                         <outlet property="btnTranslate" destination="CK0-ag-5e1" id="AzH-8x-HAA"/>
                         <outlet property="progressBgView" destination="Rfh-7P-E4P" id="0eJ-B1-nDH"/>
-                        <outlet property="progressIndicatorView" destination="yZ6-js-Q42" id="fTd-Kd-eez"/>
+                        <outlet property="progressIndicatorView" destination="rA4-FY-bNK" id="mKh-ph-Qhx"/>
                         <outlet property="txtContent" destination="GQW-KR-Hsc" id="av4-gB-NTw"/>
                         <outlet property="txtLocalized" destination="vzi-bh-eWy" id="2uf-Ie-I9H"/>
                         <outlet property="txtMeans" destination="PHS-cO-041" id="azs-IH-YBT"/>
