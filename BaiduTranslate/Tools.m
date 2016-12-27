@@ -9,8 +9,67 @@
 #import "Tools.h"
 #include <objc/runtime.h>
 #import <Cocoa/Cocoa.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
+#import <NetworkExtension/NWHostEndpoint.h>
+#import <NetworkExtension/NWTCPConnection.h>
+
+#import <ifaddrs.h>
+#import <sys/socket.h>
+#import <net/if.h>
+#import <netinet/in.h>
+#import <arpa/inet.h>
 
 @implementation Tools
+
+#pragma mark - -------获取当前WIFI SSID信息----------------
++ (NSString*)getCurrentWifiSSID
+{
+    NSString *ssid = [self.class getCurrentWifiInfo][@"SSID"];
+    return ssid;
+}
+
++ (NSDictionary *)getCurrentWifiInfo
+{
+    NSDictionary *ssid = nil;
+    NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();//获取支持的端口(比如笔记本电脑包含有线和无线2种接口的网络)
+    //NSLog(@"Supported interfaces: %@", ifs);
+    for (NSString *ifnam in ifs) {
+        CFDictionaryRef myDict = CGSessionCopyCurrentDictionary();
+        NSDictionary *info = myDict ? (NSDictionary *)CFBridgingRelease(myDict) : nil;
+        //NSLog(@"dici：%@",[info  allKeys]);
+        CGSessionCopyCurrentDictionary();
+        if (info[@"SSID"]) {
+            //BSSID是WiFi的mac地址
+            ssid = info;
+            break;
+        }
+    }
+    
+    return ssid;
+}
+
++ (NSDictionary *)getLocalIPAddress
+{
+    NSMutableDictionary *localIP = [NSMutableDictionary dictionary];
+    struct ifaddrs *addrs;
+    if (getifaddrs(&addrs)==0) {
+        const struct ifaddrs *cursor = addrs;
+        while (cursor != NULL) {
+            if (cursor->ifa_addr->sa_family == AF_INET && (cursor->ifa_flags & IFF_LOOPBACK) == 0)
+            {
+                NSString *IP = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)cursor->ifa_addr)->sin_addr)];
+                
+                NSString *name = [NSString stringWithUTF8String:cursor->ifa_name];
+                if (IP.length > 0) {
+                    [localIP setObject:IP forKey:name];
+                }
+            }
+            cursor = cursor->ifa_next;
+        }
+        freeifaddrs(addrs);
+    }
+    return localIP;
+}
 
 #pragma mark - --------其它------------------------
 + (void)duration:(NSTimeInterval)dur block:(dispatch_block_t)block

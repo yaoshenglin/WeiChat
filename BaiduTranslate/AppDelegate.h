@@ -8,8 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class Reachability;
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+@property (nonatomic, retain) Reachability *hostReach;
 
 @end
 

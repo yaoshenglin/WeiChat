@@ -15,6 +15,10 @@ typedef CF_ENUM(NSStringEncoding, CFStringBuilt) {
 
 @interface Tools : NSObject
 
++ (NSString*)getCurrentWifiSSID;
++ (NSDictionary *)getCurrentWifiInfo;
++ (NSDictionary *)getLocalIPAddress;
+
 + (void)duration:(NSTimeInterval)dur block:(dispatch_block_t)block;
 //异步
 + (void)asyncWithBlock:(dispatch_block_t)block;

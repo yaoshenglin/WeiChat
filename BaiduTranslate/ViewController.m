@@ -63,6 +63,9 @@
         NSArray *list = [content componentsSeparatedByString:@"center"];
         content = [list objAtIndex:1] ?: @"";
         content = [content replaceStrings:@[@">",@"</"] withString:@""];
+        NSDictionary *dicIP = [Tools getLocalIPAddress];
+        NSString *IP = [dicIP objectForKey:dicIP.allKeys.lastObject];
+        content = [NSString stringWithFormat:@"本机IP地址：%@\n%@",IP,content];
         [_txtMeans setTextViewString:content];
         NSLog(@"%@",content);
     }];

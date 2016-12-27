@@ -17,6 +17,10 @@
 		148936B91DD41058002DC939 /* Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 148936B81DD41058002DC939 /* Request.m */; };
 		148936BC1DD44527002DC939 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 148936BB1DD44527002DC939 /* Tools.m */; };
 		148936BF1DD451D9002DC939 /* infoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 148936C11DD451D9002DC939 /* infoPlist.strings */; };
+		148D755B1E10F39A00DD0686 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 148D755A1E10F39A00DD0686 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		148D755E1E10F40F00DD0686 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 148D755D1E10F40F00DD0686 /* SystemConfiguration.framework */; };
+		148D75601E10F42700DD0686 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 148D755F1E10F42700DD0686 /* CoreTelephony.framework */; };
+		148D75B01E11131D00DD0686 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 148D75AF1E11131D00DD0686 /* NetworkExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +43,11 @@
 		148936BB1DD44527002DC939 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		148936C01DD451D9002DC939 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/infoPlist.strings; sourceTree = "<group>"; };
 		148936C21DD451EE002DC939 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/infoPlist.strings"; sourceTree = "<group>"; };
+		148D75591E10F39A00DD0686 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		148D755A1E10F39A00DD0686 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		148D755D1E10F40F00DD0686 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		148D755F1E10F42700DD0686 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		148D75AF1E11131D00DD0686 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +55,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				148D75B01E11131D00DD0686 /* NetworkExtension.framework in Frameworks */,
+				148D75601E10F42700DD0686 /* CoreTelephony.framework in Frameworks */,
+				148D755E1E10F40F00DD0686 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				148936A21DD40FCF002DC939 /* BaiduTranslate */,
+				148D755C1E10F3EF00DD0686 /* Frameworks */,
 				148936A11DD40FCF002DC939 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -81,6 +94,8 @@
 				148936BB1DD44527002DC939 /* Tools.m */,
 				1436E0E31DDC68C400F47309 /* IndicatorView.h */,
 				1436E0E41DDC68C400F47309 /* IndicatorView.m */,
+				148D75591E10F39A00DD0686 /* Reachability.h */,
+				148D755A1E10F39A00DD0686 /* Reachability.m */,
 				1452F36F1DD5AE90009628AF /* NSXMLParser+Cobbler.h */,
 				1452F3701DD5AE90009628AF /* NSXMLParser+Cobbler.m */,
 				148936A61DD40FD0002DC939 /* Supporting Files */,
@@ -98,6 +113,16 @@
 				148936AE1DD40FD0002DC939 /* Main.storyboard */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		148D755C1E10F3EF00DD0686 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				148D75AF1E11131D00DD0686 /* NetworkExtension.framework */,
+				148D755F1E10F42700DD0686 /* CoreTelephony.framework */,
+				148D755D1E10F40F00DD0686 /* SystemConfiguration.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +199,7 @@
 			files = (
 				148936AB1DD40FD0002DC939 /* ViewController.m in Sources */,
 				148936BC1DD44527002DC939 /* Tools.m in Sources */,
+				148D755B1E10F39A00DD0686 /* Reachability.m in Sources */,
 				148936B91DD41058002DC939 /* Request.m in Sources */,
 				148936A81DD40FD0002DC939 /* main.m in Sources */,
 				148936A51DD40FCF002DC939 /* AppDelegate.m in Sources */,
