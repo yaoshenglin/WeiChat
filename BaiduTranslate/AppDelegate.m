@@ -11,6 +11,9 @@
 #import "Tools.h"
 
 @interface AppDelegate ()
+{
+    BOOL islaunch;
+}
 
 @end
 
@@ -44,6 +47,11 @@
 #pragma mark - --------网络状态监听----------------
 - (void)reachabilityChanged:(NSNotification *)note
 {
+    if (!islaunch) {
+        islaunch = YES;
+        return;
+    }
+    
     Reachability *currReach = [note object];
     NSParameterAssert([currReach isKindOfClass:[Reachability class]]);
     
