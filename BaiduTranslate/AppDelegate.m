@@ -13,6 +13,7 @@
 @interface AppDelegate ()
 {
     BOOL islaunch;
+    BOOL isFirst;
 }
 
 @end
@@ -25,6 +26,7 @@
 {
     // Insert code here to initialize your application
     
+    isFirst = YES;
     NSWindow *window = [NSApplication sharedApplication].windows.firstObject;
     window.title = @"百度翻译";
     
@@ -57,14 +59,15 @@
     
     //对连接改变做出响应处理动作
     NetworkStatus status = [currReach currentReachabilityStatus];//当前的状态
-    
+    NSLog(@"%@",[currReach getStringWithStatus:status]);
     if (status == ReachableViaWWAN) {
         NSError *error = [NSError errorWithDomain:@"网络已连接！" code:0 userInfo:@{NSLocalizedDescriptionKey:@"the content is nil"}];
         NSLog(@"%@",error.localizedDescription);
         NSAlert *alert = [NSAlert alertWithError:error];
         alert.messageText = @"当前为移动数据网络";
         [alert addButtonWithTitle:@"确定"];
-        [alert runModal];
+        NSWindow *window = [NSApplication sharedApplication].windows.firstObject;
+        [alert beginSheetModalForWindow:window completionHandler:nil];
     }
     else if(status == ReachableViaWiFi)
     {
@@ -73,12 +76,18 @@
         NSDictionary *dicIP = [Tools getLocalIPAddress];
         NSLog(@"当前连接为WiFi网络！IP : %@", dicIP.stringUsingASCIIEncoding);
         
+        if (isFirst) {
+            isFirst = NO;
+            return;
+        }
+        
         NSError *error = [NSError errorWithDomain:@"WiFi已经连接！" code:0 userInfo:@{NSLocalizedDescriptionKey:@"the content is nil"}];
         NSLog(@"%@",error.localizedDescription);
         NSAlert *alert = [NSAlert alertWithError:error];
         alert.messageText = @"网络状态发生了改变";
         [alert addButtonWithTitle:@"确定"];
-        [alert runModal];
+        NSWindow *window = [NSApplication sharedApplication].windows.firstObject;
+        [alert beginSheetModalForWindow:window completionHandler:nil];
         
     }else{
         
@@ -96,7 +105,8 @@
         NSAlert *alert = [NSAlert alertWithError:error];
         alert.messageText = SSIDStr;
         [alert addButtonWithTitle:@"确定"];
-        [alert runModal];
+        NSWindow *window = [NSApplication sharedApplication].windows.firstObject;
+        [alert beginSheetModalForWindow:window completionHandler:nil];
     }
 }
 
